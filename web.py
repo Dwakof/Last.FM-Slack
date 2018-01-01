@@ -6,6 +6,8 @@ import json
 from flask_sqlalchemy import SQLAlchemy
 import pylast
 
+auth_url = os.environ["AUTH_URL"]
+
 last_api_key = os.environ["LAST_API_KEY"]
 last_api_secret = os.environ["LAST_API_SECRET"]
 
@@ -63,7 +65,7 @@ def pre_install():
     text = request.form.get('text', None)   
     if text == None or text == "":
         return "please enter a valid user", 200
-    return '<https://slack.com/oauth/authorize?scope=users.profile:write,users.profile:read&client_id=12303250033.170352121623&redirect_uri=' + urllib.parse.quote ('https://1e2e4665.ngrok.io/finish_auth') + '&state=' + text + '| Click here to Sign in with Slack!>', 200
+    return '<https://slack.com/oauth/authorize?scope=users.profile:write,users.profile:read&client_id='+ client_id +'&redirect_uri=' + urllib.parse.quote (auth_url) + '&state=' + text + '| Click here to Sign in with Slack!>', 200
 
 @app.route("/finish_auth/", methods=["GET", "POST"])
 def post_install():
