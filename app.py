@@ -16,7 +16,7 @@ client_id = os.environ["SLACK_CLIENT_ID"]
 client_secret = os.environ["SLACK_CLIENT_SECRET"]
 
 
-db = create_engine('sqlite:///data/data.db')
+db = create_engine('sqlite:////data/data.db')
 Session = sessionmaker(bind=db)
 
 Base = declarative_base()
