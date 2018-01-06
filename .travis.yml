@@ -1,0 +1,17 @@
+sudo: required
+
+language: python
+
+services:
+  - docker
+
+script:
+  - if [ ${TRAVIS_PULL_REQUEST} = "false" ]; then
+      docker build -t dwakof/lastfm-slack:${TRAVIS_BRANCH} .;
+    else
+      docker build -t dwakof/lastfm-slack:${TRAVIS_PULL_REQUEST} .;
+    fi
+
+after_success:
+  - docker login -u="$DOCKER_USERNAME" -p="$DOCKER_PASSWORD";
+  - docker push dwakof/lastfm-slack
