@@ -91,7 +91,7 @@ def post_install():
     
     user = User.query.filter_by(user_id=user_id).first()
     if user == None:
-	sc = SlackClient(token)
+        sc = SlackClient(token)
 	
         profile = sc.api_call(
             "users.profile.get",
