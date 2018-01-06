@@ -75,7 +75,7 @@ def setStatus(user):
     else:
         if json.loads(user.user_status)['status_text'] == response['profile']['status_text']:
             return
-        if response['profile']['status_emoji'] == ":musical_note:":
+        if response['profile']['status_emoji'] == ":lastfm_headphones:":
             payload = {
                 "status_text": json.loads(user.user_status)['status_text'],
                 "status_emoji": json.loads(user.user_status)['status_emoji']

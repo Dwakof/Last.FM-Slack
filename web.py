@@ -2,7 +2,6 @@ import os
 from flask import Flask, request, jsonify
 from slackclient import SlackClient
 import urllib
-from urllib.parse import quote
 import json
 from flask_sqlalchemy import SQLAlchemy
 import pylast
@@ -18,7 +17,7 @@ client_secret = os.environ["SLACK_CLIENT_SECRET"]
 lastfm_network = pylast.LastFMNetwork(api_key=last_api_key, api_secret=last_api_secret)
 
 app = Flask(__name__)
-app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:////data.db'
+app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:////data/data.db'
 db = SQLAlchemy(app)
 
 class User(db.Model):
@@ -66,7 +65,7 @@ def pre_install():
     text = request.form.get('text', None)   
     if text == None or text == "":
         return "please enter a valid user", 200
-    return '<https://slack.com/oauth/authorize?scope=users.profile:write,users.profile:read&client_id='+ client_id +'&redirect_uri=' + quote(auth_url) + '&state=' + text + '| Click here to Sign in with Slack!>', 200
+    return '<https://slack.com/oauth/authorize?scope=users.profile:write,users.profile:read&client_id='+ client_id +'&redirect_uri=' + urllib.parse.quote(auth_url) + '&state=' + text + '| Click here to Sign in with Slack!>', 200
 
 @app.route("/finish_auth/", methods=["GET", "POST"])
 def post_install():
@@ -92,6 +91,8 @@ def post_install():
     
     user = User.query.filter_by(user_id=user_id).first()
     if user == None:
+	sc = SlackClient(token)
+	
         profile = sc.api_call(
             "users.profile.get",
             client_id=client_id,
