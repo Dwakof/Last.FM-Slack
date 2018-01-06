@@ -66,11 +66,11 @@ def setStatus(user):
         song = (song[:97] + '...') if len(song) > 100 else song
         if song == response['profile']['status_text']:
             return
-        if response['profile']['status_emoji'] != ":musical_note:":
+        if response['profile']['status_emoji'] != ":lastfm_headphones:":
             user.user_status = json.dumps(currentProfile)
         payload = {
             "status_text": song,
-            "status_emoji": ":musical_note:"
+            "status_emoji": ":lastfm_headphones:"
         }
     else:
         if json.loads(user.user_status)['status_text'] == response['profile']['status_text']:
